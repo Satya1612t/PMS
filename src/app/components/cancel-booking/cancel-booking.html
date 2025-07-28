@@ -1,0 +1,50 @@
+<p>cancel-booking works!</p>
+
+    <div class="cancel-booking">
+      <div class="container">
+        <div class="card">
+          <h2>Cancel Booking</h2>
+          <p>Enter booking ID to cancel a parcel booking (only bookings with status 'booked' can be cancelled)</p>
+          
+          <div class="form-group">
+            <label for="bookingId" class="form-label">Booking ID *</label>
+            <div class="search-container">
+              <input
+                type="text"
+                id="bookingId"
+                [(ngModel)]="bookingId"
+                class="form-control"
+                [class.error]="showError"
+                placeholder="Enter Booking ID (e.g., BK001)"
+                (keyup.enter)="cancelBooking()"
+              >
+              <button type="button" class="btn btn-danger" (click)="cancelBooking()">
+                Cancel Booking
+              </button>
+            </div>
+            <div class="error-message" *ngIf="showError">
+              {{ errorMessage }}
+            </div>
+          </div>
+
+          <div class="success-message" *ngIf="successMessage">
+            {{ successMessage }}
+          </div>
+
+          <div class="error-alert" *ngIf="errorMessage && !showError">
+            {{ errorMessage }}
+          </div>
+
+          <div class="info-section">
+            <h3>Cancellation Policy</h3>
+            <ul>
+              <li>Only bookings with status 'booked' can be cancelled</li>
+              <li>Bookings that are 'delivered' or 'in transit' cannot be cancelled</li>
+              <li>Cancelled bookings can be restored to 'booked' status by admin if needed</li>
+              <li>Refund will be processed within 5 working days</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  

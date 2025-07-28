@@ -1,0 +1,233 @@
+<div class="booking-service">
+  <div class="container">
+    <div class="card">
+      <h2>Create New Booking</h2>
+      <p>Complete the form below to create a new parcel booking</p>
+
+      <form (ngSubmit)="submitBooking()" #bookingForm="ngForm">
+        <!-- Customer Information (Pre-filled) -->
+        <div class="section">
+          <h3>Customer Information</h3>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" [value]="currentUser?.name" readonly />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Address</label>
+              <input type="text" class="form-control" [value]="currentUser?.address" readonly />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Details</label>
+              <input type="text" class="form-control" [value]="currentUser?.contactDetails" readonly />
+            </div>
+          </div>
+        </div>
+
+        <!-- Receiver Information -->
+        <div class="section">
+          <h3>Receiver Information</h3>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="receiverName" class="form-label">Receiver Name *</label>
+              <input
+                type="text"
+                id="receiverName"
+                name="receiverName"
+                [(ngModel)]="newBooking.receiverName"
+                class="form-control"
+                [class.error]="showErrors && !newBooking.receiverName"
+                required
+              />
+              <div class="error-message" *ngIf="showErrors && !newBooking.receiverName">
+                Receiver name is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="receiverMobile" class="form-label">Receiver Mobile *</label>
+              <input
+                type="tel"
+                id="receiverMobile"
+                name="receiverMobile"
+                [(ngModel)]="newBooking.receiverMobile"
+                class="form-control"
+                [class.error]="showErrors && !isValidMobile(newBooking.receiverMobile || '')"
+                pattern="[0-9]{10}"
+                required
+              />
+              <div class="error-message" *ngIf="showErrors && !isValidMobile(newBooking.receiverMobile || '')">
+                Please enter a valid 10-digit mobile number
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="receiverAddress" class="form-label">Receiver Address *</label>
+              <textarea
+                id="receiverAddress"
+                name="receiverAddress"
+                [(ngModel)]="newBooking.receiverAddress"
+                class="form-control"
+                [class.error]="showErrors && !newBooking.receiverAddress"
+                rows="3"
+                required
+              ></textarea>
+              <div class="error-message" *ngIf="showErrors && !newBooking.receiverAddress">
+                Receiver address is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="receiverPin" class="form-label">Receiver PIN Code *</label>
+              <input
+                type="number"
+                id="receiverPin"
+                name="receiverPin"
+                [(ngModel)]="newBooking.receiverPin"
+                class="form-control"
+                [class.error]="showErrors && !isValidPin(newBooking.receiverPin || '')"
+                pattern="[0-9]{6}"
+                required
+              />
+              <div class="error-message" *ngIf="showErrors && !isValidPin(newBooking.receiverPin || '')">
+                Please enter a valid 6-digit PIN code
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parcel Information -->
+        <div class="section">
+          <h3>Parcel Information</h3>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="parcelWeight" class="form-label">Parcel Weight (grams) *</label>
+              <input
+                type="number"
+                id="parcelWeight"
+                name="parcelWeight"
+                [(ngModel)]="newBooking.parcelWeight"
+                class="form-control"
+                [class.error]="showErrors && (!newBooking.parcelWeight || newBooking.parcelWeight <= 0)"
+                min="1"
+                (input)="calculateCost()"
+                required
+              />
+              <div class="error-message" *ngIf="showErrors && (!newBooking.parcelWeight || newBooking.parcelWeight <= 0)">
+                Please enter a valid weight in grams
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="parcelContents" class="form-label">Parcel Contents Description *</label>
+              <textarea
+                id="parcelContents"
+                name="parcelContents"
+                [(ngModel)]="newBooking.parcelContents"
+                class="form-control"
+                [class.error]="showErrors && !newBooking.parcelContents"
+                rows="3"
+                required
+              ></textarea>
+              <div class="error-message" *ngIf="showErrors && !newBooking.parcelContents">
+                Please describe the parcel contents
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="deliveryType" class="form-label">Delivery Type *</label>
+              <select
+                id="deliveryType"
+                name="deliveryType"
+                [(ngModel)]="newBooking.deliveryType"
+                class="form-control"
+                [class.error]="showErrors && !newBooking.deliveryType"
+                (change)="calculateCost()"
+                required
+              >
+                <option value="">Select delivery type</option>
+                <option value="standard">Standard Delivery (+₹30)</option>
+                <option value="express">Express Delivery (+₹80)</option>
+                <option value="same-day">Same-Day Delivery (+₹150)</option>
+              </select>
+              <div class="error-message" *ngIf="showErrors && !newBooking.deliveryType">
+                Please select a delivery type
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="packingPreference" class="form-label">Packing Preference *</label>
+              <select
+                id="packingPreference"
+                name="packingPreference"
+                [(ngModel)]="newBooking.packingPreference"
+                class="form-control"
+                [class.error]="showErrors && !newBooking.packingPreference"
+                (change)="calculateCost()"
+                required
+              >
+                <option value="">Select packing preference</option>
+                <option value="basic">Basic Packing (+₹10)</option>
+                <option value="premium">Premium Packing (+₹30)</option>
+              </select>
+              <div class="error-message" *ngIf="showErrors && !newBooking.packingPreference">
+                Please select a packing preference
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Calculation -->
+        <div class="section" *ngIf="calculatedCost > 0">
+          <h3>Cost Breakdown</h3>
+          <div class="cost-breakdown">
+            <div class="cost-item">
+              <span>Base Rate:</span>
+              <span>₹50.00</span>
+            </div>
+            <div class="cost-item">
+              <span>Weight Charge ({{ newBooking.parcelWeight }}g × ₹0.02):</span>
+              <span>₹{{ ((newBooking.parcelWeight || 0) * 0.02).toFixed(2) }}</span>
+            </div>
+            <div class="cost-item">
+              <span>Delivery Charge:</span>
+              <span>₹{{ getDeliveryCharge() }}</span>
+            </div>
+            <div class="cost-item">
+              <span>Packing Charge:</span>
+              <span>₹{{ getPackingCharge() }}</span>
+            </div>
+            <div class="cost-item">
+              <span>Admin Fee:</span>
+              <span>₹50.00</span>
+            </div>
+            <div class="cost-item subtotal">
+              <span>Subtotal:</span>
+              <span>₹{{ getSubtotal().toFixed(2) }}</span>
+            </div>
+            <div class="cost-item">
+              <span>Tax (5%):</span>
+              <span>₹{{ (getSubtotal() * 0.05).toFixed(2) }}</span>
+            </div>
+            <div class="cost-item total">
+              <span>Total Amount:</span>
+              <span>₹{{ calculatedCost.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+        <div class="error-alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Creating Booking...' : 'Create Booking' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">Reset Form</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

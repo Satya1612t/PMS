@@ -1,0 +1,45 @@
+
+    .cancel-booking {
+      padding: 20px 0;
+    }
+    
+    .search-container {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    
+    .search-container input {
+      flex: 1;
+    }
+    
+    .info-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e5e7eb;
+    }
+    
+    .info-section h3 {
+      color: #374151;
+      margin-bottom: 16px;
+    }
+    
+    .info-section ul {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    
+    .info-section li {
+      margin-bottom: 8px;
+    }
+    
+    @media (max-width: 768px) {
+      .search-container {
+        flex-direction: column;
+      }
+      
+      .search-container button {
+        width: 100%;
+      }
+    }
+ 

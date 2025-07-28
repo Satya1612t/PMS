@@ -1,0 +1,120 @@
+
+    .bookings {
+      padding: 20px 0;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .results-summary {
+      margin-bottom: 20px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+    
+    .page-info {
+      padding: 8px 16px;
+      color: #374151;
+      font-weight: 500;
+    }
+    
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    
+    .detail-item label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+    
+    .detail-item span {
+      color: #6b7280;
+    }
+    
+    .feedback-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .feedback-item {
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .feedback-header h4 {
+      margin: 0;
+      color: #374151;
+    }
+    
+    .rating {
+      color: #fbbf24;
+    }
+    
+    .rating .filled {
+      color: #fbbf24;
+    }
+    
+    .rating .empty {
+      color: #d1d5db;
+    }
+    
+    .feedback-item p {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .no-feedback {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+    
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+      
+      .header-actions {
+        justify-content: center;
+      }
+      
+      .table {
+        font-size: 12px;
+      }
+      
+      .table th,
+      .table td {
+        padding: 8px 4px;
+      }
+    }
+  

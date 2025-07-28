@@ -1,0 +1,76 @@
+<div class="dashboard">
+      <div class="container">
+        <div class="welcome-section card">
+          <h1>Welcome back, {{ currentUser?.name }}!</h1>
+          <p>Role: {{ currentUser?.role | titlecase }}</p>
+          <p>Manage your delivery operations efficiently with our comprehensive dashboard.</p>
+        </div>
+
+        <div class="stats-grid grid grid-4">
+          <div class="stat-card card">
+            <h3>Total Bookings</h3>
+            <div class="stat-number">{{ totalBookings }}</div>
+          </div>
+          <div class="stat-card card">
+            <h3>Active Deliveries</h3>
+            <div class="stat-number">{{ activeDeliveries }}</div>
+          </div>
+          <div class="stat-card card">
+            <h3>Delivered Today</h3>
+            <div class="stat-number">{{ deliveredToday }}</div>
+          </div>
+          <div class="stat-card card">
+            <h3>Pending Pickups</h3>
+            <div class="stat-number">{{ pendingPickups }}</div>
+          </div>
+        </div>
+
+        <div class="quick-actions grid grid-3">
+          <div class="action-card card">
+            <h3>Quick Tracking</h3>
+            <p>Track any parcel by entering booking ID</p>
+            <a routerLink="/tracking" class="btn btn-primary">Go to Tracking</a>
+          </div>
+          <div class="action-card card">
+            <h3>New Booking</h3>
+            <p>Create a new booking for customers</p>
+            <a routerLink="/booking-service" class="btn btn-primary">Create Booking</a>
+          </div>
+          <div class="action-card card">
+            <h3>View All Bookings</h3>
+            <p>Manage and filter all bookings</p>
+            <a routerLink="/bookings" class="btn btn-primary">View Bookings</a>
+          </div>
+        </div>
+
+        <div class="recent-bookings card">
+          <h3>Recent Bookings</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let booking of recentBookings">
+                  <td>{{ booking.bookingId }}</td>
+                  <td>{{ booking.customerName }}</td>
+                  <td>{{ booking.dateOfBooking | date: 'short' }}</td>
+                  <td>
+                    <span class="status-badge" [class]="'status-' + booking.parcelStatus">
+                      {{ booking.parcelStatus | titlecase }}
+                    </span>
+                  </td>
+                  <td>₹{{ booking.amount }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
