@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
@@ -119,8 +123,8 @@ import { FooterComponent } from '../footer/footer.component';
 
     <!-- Why Choose Us Section -->
     <section class="features-section">
-      <div class="container">
-        <div class="features-content">
+    <div class="container">
+    <div class="features-content">
           <div class="features-text">
             <h2>Why choose us<br>for your service</h2>
             <p>
@@ -131,9 +135,9 @@ import { FooterComponent } from '../footer/footer.component';
             <button class="btn btn-primary">Learn More</button>
           </div>
           <div class="features-grid">
-            <div class="feature-item" *ngFor="let feature of features">
-              <div class="feature-icon" [innerHTML]="feature.icon"></div>
-              <div class="feature-content">
+          <div class="feature-item" *ngFor="let feature of features">
+          <div class="feature-icon" [innerHTML]="feature.icon"></div>
+          <div class="feature-content">
                 <h3>{{ feature.title }}</h3>
                 <p>{{ feature.description }}</p>
               </div>
@@ -145,26 +149,38 @@ import { FooterComponent } from '../footer/footer.component';
 
     <!-- Emergency Solutions Section -->
     <section class="emergency-section">
-      <div class="container">
+  
+  
+  
+    <img #droneImage src="2.jpg" class="drone" alt="Drone" />
+  
+  
+  
+    <div class="container">
         <div class="emergency-content">
           <div class="emergency-text">
-            <h2>Emergency<br>Solutions<br>for Delivery</h2>
+            <div class="emergency-heading">
+              <h4>Emergency</h4>
+              <h4 class="left-heading">solution</h4>
+              <h4>for delivery</h4>
+            </div>
             <p class="emergency-subtitle">
               Aliquam Porta Nisl Dolor, Molestie<br>
               Pellentesque Est Molestie In, Morbi<br>
               Metus Neque, Elementum<br>
               Ullamcorper Molestie
             </p>
-            <ul class="emergency-features">
+            </div>
+            <div class="text-box">
+            <ul class="emergency-features drone-delivery">
               <li>— Fastest Transit Times</li>
               <li>— Security And Protection</li>
               <li>— Safe Packaging</li>
               <li>— Guaranteed Delivery</li>
             </ul>
           </div>
-          <div class="emergency-illustration">
-            <div class="drone-delivery"></div>
-          </div>
+
+         
         </div>
       </div>
     </section>
@@ -178,7 +194,51 @@ import { FooterComponent } from '../footer/footer.component';
   `,
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit {
+
+  @ViewChild('droneImage') droneImage!: ElementRef;
+  @ViewChild('heroText') heroText!: ElementRef;
+
+
+ngAfterViewInit() {
+  gsap.fromTo(
+    this.droneImage.nativeElement,
+    { x: 1000, y: -400, opacity: 0 },
+    {
+      x: -200,
+      y: 50,
+      opacity: 1,
+      duration: 2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: this.droneImage.nativeElement,
+        start: 'top 80%',  // when the top of the element hits 80% of viewport
+        toggleActions: 'play none none reverse' // play on enter, reverse on leave
+      }
+    }
+  );
+
+  gsap.fromTo(
+    this.heroText.nativeElement,
+    { opacity: 0, y: 10 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.5,
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: this.heroText.nativeElement,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    }
+  );
+}
+
+
+
+
+
   services = [
     {
       title: 'Road\nTransportation',
